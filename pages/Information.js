@@ -4,16 +4,24 @@ import { useState } from "react";
 import {SearchData,messageque,messageData} from '../components/MainProgram';
 
 
-var messagetext;
-// 表示するテキストをmessagetextで表示
 
-
-  
-var nowmessage = 0;
 export default function Home() {
 
+  
+  var nowmessage = 0;
   if(Object.keys(messageque).length != 0)var [messagetext, setText] = useState((messageque[0][nowmessage+1][0] + ":  " + messageque[0][nowmessage+1][1]));
-
+  else var [messagetext, setText] = useState("現在進行中の会話はありません"); 
+ function textanimation(Text) {
+  var wordtoreturn  =  "";  
+  for(var i = 0; i<Text.length; i++){
+        wordtoreturn += Text[i];
+        setTimeout(textshows(wordtoreturn),1000);
+    }
+}
+  function textshows(wordreturn){
+    setText(wordreturn);
+  }
+  
   function nextmessage() {
     if(Object.keys(messageque).length == 0){
       return;
@@ -21,15 +29,15 @@ export default function Home() {
     nowmessage++;
     if(nowmessage == (Object.keys(messageque[0]).length)-1){
       nowmessage = 0;
-      messageque.pop();
+      messageque.shift();
     }
   if(Object.keys(messageque).length == 0){
     setText("現在進行中の会話はありません");
   }
-  else setText(messageque[0][nowmessage+1][0] + ":  " + messageque[0][nowmessage+1][1])
+  else {
+    textanimation(messageque[0][nowmessage+1][0] + ":  " + messageque[0][nowmessage+1][1])
+  }
 }
-  
-
 
     return (
       <>
